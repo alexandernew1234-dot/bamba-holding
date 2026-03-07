@@ -485,13 +485,20 @@
 
     <div class="contact-wrap">
       <div class="contact-label">Get in touch</div>
-      <div class="contact-link">
+      <a id="contactLink" class="contact-link" href="#">
         <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="2" y="4" width="20" height="16" rx="2"/>
           <path d="m2 7 10 7 10-7"/>
         </svg>
-        alex [at] bamba.chat
-      </div>
+        <span id="contactEmail">alex@bamba.chat</span>
+      </a>
+      <script>
+        (function(){
+          var u='alex',d='bamba.chat';
+          var el=document.getElementById('contactLink');
+          el.href='mai'+'lto:'+u+'@'+d;
+        })();
+      </script>
     </div>
 
   </div><!-- /container -->
