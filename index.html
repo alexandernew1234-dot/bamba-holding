@@ -518,7 +518,8 @@
     <h2 class="form-title">Become an Early Riser</h2>
     <p class="form-intro">Bamba is launching to a small founding community first. Tell us a little about yourself — you must be over 18 years old. We'll be in touch when your spot is ready.</p>
 
-    <form id="earlyRiserForm">
+    <form id="earlyRiserForm" action="https://formspree.io/f/xnjgnqoo" method="POST">
+      <input type="hidden" name="_next" value="https://bamba.chat/?success=true" />
 
       <div class="field">
         <label for="f-name">Name</label>
@@ -559,37 +560,5 @@
 
   </div>
 </section>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  document.getElementById('earlyRiserForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const btn = this.querySelector('.submit-btn');
-    const originalHTML = btn.innerHTML;
-    btn.innerHTML = 'Sending…';
-    btn.disabled = true;
-
-    const data = {
-      name:      document.getElementById('f-name').value,
-      email:     document.getElementById('f-email').value,
-      reason:    document.getElementById('f-reason').value,
-      following: document.getElementById('f-following').value,
-      other:     document.getElementById('f-other').value,
-    };
-
-    // Formspree — go to formspree.io, create a free form pointed at alex@bamba.chat
-    // Replace YOUR_FORM_ID below with the ID they give you (e.g. xpwzgkla)
-    try {
-      const res = await fetch('https://formspree.io/f/xnjgnqoo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      if (res.ok) {
-        document.getElementById('earlyRiserForm').style.display = 'none';
-        document.getElementById('successMsg').classList.add('show');
-      } else {
-        throw new Error('failed');
-      }
-   
+</body>
+</html>
