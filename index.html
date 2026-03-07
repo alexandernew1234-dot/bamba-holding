@@ -12,11 +12,7 @@
   body {
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
     animation: bgTransition 8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
   }
@@ -28,8 +24,20 @@
     100% { background: #FAF4EC; }
   }
 
+  /* Hero — full-viewport first screen */
+  .hero {
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
   .horizon {
-    position: fixed;
+    position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 70%;
     pointer-events: none;
@@ -44,9 +52,9 @@
     100% { background: radial-gradient(ellipse 90% 55% at 50% 100%, rgba(200,74,16,0.06) 0%, transparent 70%); }
   }
 
-  body::after {
+  .hero::after {
     content: '';
-    position: fixed;
+    position: absolute;
     inset: 0;
     background-image:
       linear-gradient(rgba(232,234,240,0.025) 1px, transparent 1px),
@@ -72,22 +80,14 @@
     padding: 40px 24px;
   }
 
-  /* 
-    letter-spacing: 0.35em adds spacing AFTER each of the 5 letters.
-    This shifts the optical centre of "BAMBA" left by half of one letter-spacing unit.
-    At ~72px font-size, 0.35em ≈ 25px per gap, so we nudge logo left by ~12-13px
-    to re-centre visually over the M.
-    We use translateX(-0.175em) relative to the wordmark font size via a CSS variable.
-  */
   .logo-wrap {
     position: relative;
     width: 90px;
     height: 90px;
     margin-bottom: 18px;
     z-index: 2;
-    /* Shift left by half a letter-spacing to optically centre over M */
     transform: translateX(-0.175em);
-    font-size: clamp(42px, 8vw, 72px); /* matches wordmark so em unit is correct */
+    font-size: clamp(42px, 8vw, 72px);
     animation: logoRise 5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
   }
 
@@ -125,10 +125,7 @@
     to   { opacity: 1; transform: scale(1); }
   }
 
-  .wordmark-wrap {
-    position: relative;
-    z-index: 2;
-  }
+  .wordmark-wrap { position: relative; z-index: 2; }
 
   .wordmark {
     font-family: 'Raleway', sans-serif;
@@ -235,7 +232,7 @@
   .contact-icon { width: 14px; height: 14px; opacity: 0.7; }
 
   .footer {
-    position: fixed;
+    position: absolute;
     bottom: 28px;
     left: 0; right: 0;
     display: flex;
@@ -262,58 +259,337 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* ─── SCROLL CUE ─────────────────────────────────────────── */
+  .scroll-cue {
+    position: absolute;
+    bottom: 68px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 1s ease 7.4s forwards;
+  }
+
+  .scroll-cue-label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #B09080;
+  }
+
+  .scroll-arrow {
+    width: 18px;
+    height: 18px;
+    border-right: 1.5px solid rgba(200,74,16,0.5);
+    border-bottom: 1.5px solid rgba(200,74,16,0.5);
+    transform: rotate(45deg);
+    animation: arrowBounce 1.6s ease-in-out 7.4s infinite;
+  }
+
+  @keyframes arrowBounce {
+    0%, 100% { transform: rotate(45deg) translate(0,0); }
+    50%       { transform: rotate(45deg) translate(4px,4px); }
+  }
+
+  /* ─── EARLY RISER FORM ───────────────────────────────────── */
+  .form-section {
+    background: #FAF4EC;
+    padding: 96px 24px 112px;
+    position: relative;
+  }
+
+  .form-section::before {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: #C84A10;
+    margin: 0 auto 64px;
+    border-radius: 2px;
+  }
+
+  .form-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .form-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #C84A10;
+    margin-bottom: 14px;
+  }
+
+  .form-title {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #07070D;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+
+  .form-intro {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: #6A5A50;
+    margin-bottom: 52px;
+    max-width: 480px;
+  }
+
+  .field { margin-bottom: 28px; }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #07070D;
+    margin-bottom: 8px;
+  }
+
+  .field label .opt {
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #9A8878;
+    font-size: 11px;
+    margin-left: 4px;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1.5px solid #DDD4C8;
+    border-radius: 4px;
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #07070D;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    border-color: #C84A10;
+    box-shadow: 0 0 0 3px rgba(200,74,16,0.1);
+  }
+
+  .field textarea { resize: vertical; min-height: 100px; }
+
+  .field input::placeholder,
+  .field textarea::placeholder { color: #B8A898; }
+
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #C84A10;
+    color: #FAF4EC;
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    margin-top: 8px;
+  }
+
+  .submit-btn:hover {
+    background: #A83A08;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(200,74,16,0.3);
+  }
+
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn .btn-arrow { transition: transform 0.2s; display: inline-block; }
+  .submit-btn:hover .btn-arrow { transform: translateX(4px); }
+
+  .success-msg {
+    display: none;
+    background: rgba(200,74,16,0.06);
+    border: 1px solid rgba(200,74,16,0.25);
+    border-radius: 4px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .success-msg.show { display: block; animation: fadeUp 0.5s ease forwards; }
+
+  .success-msg h3 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #C84A10;
+    margin-bottom: 8px;
+  }
+
+  .success-msg p { font-size: 14px; color: #6A5A50; line-height: 1.7; }
+
+  @media (max-width: 480px) {
+    .submit-btn { width: 100%; justify-content: center; }
+    .form-section { padding: 72px 20px 80px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="horizon"></div>
+<!-- ═══════════════════════════════════════
+     HERO — sunrise animation (unchanged)
+═══════════════════════════════════════ -->
+<div class="hero">
 
-<div class="container">
+  <div class="horizon"></div>
 
-  <div class="logo-wrap">
-    <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <line class="ray ray-1" x1="50" y1="24" x2="50" y2="5"    stroke="#C84A10" stroke-width="3.5" stroke-linecap="round"/>
-      <line class="ray ray-2" x1="76" y1="50" x2="95" y2="50"   stroke="#C84A10" stroke-width="3.5" stroke-linecap="round"/>
-      <line class="ray ray-3" x1="50" y1="76" x2="50" y2="93"   stroke="#C84A10" stroke-width="3"   stroke-linecap="round"/>
-      <line class="ray ray-4" x1="24" y1="50" x2="5"  y2="50"   stroke="#C84A10" stroke-width="3.5" stroke-linecap="round"/>
-      <line class="ray ray-5" x1="68.4" y1="31.6" x2="82" y2="18"  stroke="#C84A10" stroke-width="2.5" stroke-linecap="round"/>
-      <line class="ray ray-6" x1="31.6" y1="31.6" x2="18" y2="18"  stroke="#C84A10" stroke-width="2.5" stroke-linecap="round"/>
-      <line class="ray ray-7" x1="68.4" y1="68.4" x2="79" y2="79"  stroke="#C84A10" stroke-width="2"   stroke-linecap="round"/>
-      <line class="ray ray-8" x1="31.6" y1="68.4" x2="21" y2="79"  stroke="#C84A10" stroke-width="2"   stroke-linecap="round"/>
-      <circle cx="50" cy="50" r="26" fill="#C84A10"/>
-      <text x="50" y="53.5" text-anchor="middle" dominant-baseline="middle"
-        font-family="Raleway,sans-serif" font-weight="800" font-size="30" fill="white">B</text>
-    </svg>
-  </div>
+  <div class="container">
 
-  <div class="wordmark-wrap">
-    <div class="wordmark">BAMBA</div>
-  </div>
-
-  <div class="divider"></div>
-  <div class="coming-soon">Coming Soon</div>
-  <p class="tagline">The next generation social platform.<br>Built for how you connect today.</p>
-
-  <div class="contact-wrap">
-    <div class="contact-label">Get in touch</div>
-    <a href="mailto:alex@bamba.chat" class="contact-link">
-      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="2" y="4" width="20" height="16" rx="2"/>
-        <path d="m2 7 10 7 10-7"/>
+    <div class="logo-wrap">
+      <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line class="ray ray-1" x1="50" y1="24" x2="50" y2="5"    stroke="#C84A10" stroke-width="3.5" stroke-linecap="round"/>
+        <line class="ray ray-2" x1="76" y1="50" x2="95" y2="50"   stroke="#C84A10" stroke-width="3.5" stroke-linecap="round"/>
+        <line class="ray ray-3" x1="50" y1="76" x2="50" y2="93"   stroke="#C84A10" stroke-width="3"   stroke-linecap="round"/>
+        <line class="ray ray-4" x1="24" y1="50" x2="5"  y2="50"   stroke="#C84A10" stroke-width="3.5" stroke-linecap="round"/>
+        <line class="ray ray-5" x1="68.4" y1="31.6" x2="82" y2="18"  stroke="#C84A10" stroke-width="2.5" stroke-linecap="round"/>
+        <line class="ray ray-6" x1="31.6" y1="31.6" x2="18" y2="18"  stroke="#C84A10" stroke-width="2.5" stroke-linecap="round"/>
+        <line class="ray ray-7" x1="68.4" y1="68.4" x2="79" y2="79"  stroke="#C84A10" stroke-width="2"   stroke-linecap="round"/>
+        <line class="ray ray-8" x1="31.6" y1="68.4" x2="21" y2="79"  stroke="#C84A10" stroke-width="2"   stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="26" fill="#C84A10"/>
+        <text x="50" y="53.5" text-anchor="middle" dominant-baseline="middle"
+          font-family="Raleway,sans-serif" font-weight="800" font-size="30" fill="white">B</text>
       </svg>
-      alex@bamba.chat
-    </a>
+    </div>
+
+    <div class="wordmark-wrap">
+      <div class="wordmark">BAMBA</div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="coming-soon">Coming Soon</div>
+    <p class="tagline">The next generation social platform.<br>Value your time.</p>
+
+    <div class="contact-wrap">
+      <div class="contact-label">Get in touch</div>
+      <a href="/cdn-cgi/l/email-protection#83e2efe6fbc3e1e2eee1e2ade0ebe2f7" class="contact-link">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m2 7 10 7 10-7"/>
+        </svg>
+        <span class="__cf_email__" data-cfemail="c3a2afa6bb83a1a2aea1a2eda0aba2b7">[email&#160;protected]</span>
+      </a>
+    </div>
+
+  </div><!-- /container -->
+
+  <div class="footer">
+    <span>bamba.chat</span>
   </div>
 
-</div>
+  <div class="scroll-cue">
+    <div class="scroll-cue-label">Early access</div>
+    <div class="scroll-arrow"></div>
+  </div>
 
-<div class="footer">
-  <span>Bamba</span>
-  <span class="footer-dot"></span>
-  <span>bamba.chat</span>
-  <span class="footer-dot"></span>
-  <span>UK</span>
-</div>
+</div><!-- /hero -->
 
-</body>
-</html>
+
+<!-- ═══════════════════════════════════════
+     EARLY RISER FORM
+═══════════════════════════════════════ -->
+<section class="form-section" id="early-riser">
+  <div class="form-inner">
+
+    <p class="form-eyebrow">Limited early access</p>
+    <h2 class="form-title">Become an Early Riser</h2>
+    <p class="form-intro">Bamba is launching to a small founding community first. Tell us a little about yourself — you must be over 18 years old. We'll be in touch when your spot is ready.</p>
+
+    <form id="earlyRiserForm">
+
+      <div class="field">
+        <label for="f-name">Name</label>
+        <input type="text" id="f-name" name="name" placeholder="Your name" required />
+      </div>
+
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input type="email" id="f-email" name="email" placeholder="you@example.com" required />
+      </div>
+
+      <div class="field">
+        <label for="f-reason">What brings you to Bamba?</label>
+        <textarea id="f-reason" name="reason" placeholder="Tell us what interests you about Bamba…" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="f-following">Existing following <span class="opt">(optional)</span></label>
+        <input type="text" id="f-following" name="following" placeholder="e.g. Instagram @handle — 12k followers" />
+      </div>
+
+      <div class="field">
+        <label for="f-other">Anything else? <span class="opt">(optional)</span></label>
+        <textarea id="f-other" name="other" placeholder="Any questions, ideas, or things we should know…" style="min-height:80px;"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        Become an Early Riser
+        <span class="btn-arrow">→</span>
+      </button>
+
+    </form>
+
+    <div class="success-msg" id="successMsg">
+      <h3>You're on the list.</h3>
+      <p>Thanks for applying. We'll be in touch at the email you provided when your spot is ready. Welcome to Bamba.</p>
+    </div>
+
+  </div>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  document.getElementById('earlyRiserForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = this.querySelector('.submit-btn');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = 'Sending…';
+    btn.disabled = true;
+
+    const data = {
+      name:      document.getElementById('f-name').value,
+      email:     document.getElementById('f-email').value,
+      reason:    document.getElementById('f-reason').value,
+      following: document.getElementById('f-following').value,
+      other:     document.getElementById('f-other').value,
+    };
+
+    // Formspree — go to formspree.io, create a free form pointed at alex@bamba.chat
+    // Replace YOUR_FORM_ID below with the ID they give you (e.g. xpwzgkla)
+    try {
+      const res = await fetch('https://formspree.io/f/xnjgnqoo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        document.getElementById('earlyRiserForm').style.display = 'none';
+        document.getElementById('successMsg').classList.add('show');
+      } else {
+        throw new Error('failed');
+      }
+   
