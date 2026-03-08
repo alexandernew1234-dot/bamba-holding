@@ -432,6 +432,29 @@
 
   .success-msg.show { display: block; animation: fadeUp 0.5s ease forwards; }
 
+  .invite-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #C84A10;
+    border: 1px solid #C84A10;
+    border-radius: 20px;
+    padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 16px;
+  }
+
+  .invite-btn:hover {
+    background: #C84A10;
+    color: white;
+  }
+
   .success-msg h3 {
     font-family: 'Raleway', sans-serif;
     font-weight: 800;
@@ -567,5 +590,12 @@
 
   </div>
 </section>
+
+<p style="color:red;font-size:18px;margin-top:16px;text-align:center;">TEST</p>
+
+<a href="https://bamba-navy.vercel.app/signup" class="invite-btn" style="display:block; margin-top:16px; text-align:center;">
+  I have an invite code →
+</a>
+
 </body>
 </html>
